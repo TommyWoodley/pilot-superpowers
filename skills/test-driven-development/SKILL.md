@@ -13,6 +13,13 @@ Write the test first. Watch it fail. Write minimal code to pass.
 
 **Violating the letter of the rules is violating the spirit of the rules.**
 
+## Prerequisites
+
+**Before starting TDD workflow:**
+1. Use the `using-git-worktrees` skill to create an isolated workspace
+2. Verify clean test baseline in the worktree
+3. Then proceed with TDD cycle
+
 ## When to Use
 
 **Always:**
@@ -339,6 +346,14 @@ Before marking work complete:
 
 Can't check all boxes? You skipped TDD. Start over.
 
+## Completion
+
+**After completing TDD workflow:**
+1. Verify all tests pass
+2. Use the `requesting-code-review` skill to get feedback
+3. Address any issues found in review
+4. Then proceed with merge/PR workflow
+
 ## When Stuck
 
 | Problem | Solution |
@@ -360,6 +375,19 @@ When adding mocks or test utilities, read @testing-anti-patterns.md to avoid com
 - Testing mock behavior instead of real behavior
 - Adding test-only methods to production classes
 - Mocking without understanding dependencies
+
+## Integration
+
+**Called by:**
+- Any feature or bugfix implementation
+- Refactoring work
+- Behavior changes
+
+**Requires before starting:**
+- `using-git-worktrees` - Create isolated workspace
+
+**Requires after completing:**
+- `requesting-code-review` - Verify work meets requirements
 
 ## Final Rule
 
