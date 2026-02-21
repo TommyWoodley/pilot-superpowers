@@ -13,6 +13,19 @@ Claiming work is complete without verification is dishonesty, not efficiency.
 
 **Violating the letter of this rule is violating the spirit of this rule.**
 
+## Machine-Readable Session Tags
+
+For external tooling, verification-before-completion sessions MUST be explicitly delimited with these exact tags:
+
+- Start tag: `<VERIFICATION_BEFORE_COMPLETION_START>`
+- End tag: `<VERIFICATION_BEFORE_COMPLETION_END>`
+
+Rules:
+- Emit `<VERIFICATION_BEFORE_COMPLETION_START>` in the first verification-before-completion response before verification analysis.
+- Emit `<VERIFICATION_BEFORE_COMPLETION_END>` in the final verification-before-completion response after reporting evidence-backed status.
+- Put each tag on its own line with no extra characters on that line.
+- Emit each tag exactly once per verification-before-completion session.
+
 ## The Iron Law
 
 ```
