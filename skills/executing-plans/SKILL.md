@@ -80,6 +80,7 @@ After all tasks complete and verified:
 
 **Required workflow skills:**
 - **superpowers:writing-plans** - Creates the plan this skill executes
+- **superpowers:test-driven-development** - Write tests before implementation (unless specifically ignored in the plan)
 - **superpowers:finishing-a-development-branch** - Complete development after all tasks
 
 **Before starting:**
