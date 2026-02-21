@@ -13,6 +13,19 @@ Write the test first. Watch it fail. Write minimal code to pass.
 
 **Violating the letter of the rules is violating the spirit of the rules.**
 
+## Machine-Readable Session Tags
+
+For external tooling, test-driven-development sessions MUST be explicitly delimited with these exact tags:
+
+- Start tag: `<TEST_DRIVEN_DEVELOPMENT_START>`
+- End tag: `<TEST_DRIVEN_DEVELOPMENT_END>`
+
+Rules:
+- Emit `<TEST_DRIVEN_DEVELOPMENT_START>` in the first TDD response before RED phase guidance.
+- Emit `<TEST_DRIVEN_DEVELOPMENT_END>` in the final TDD response when this skill's guidance loop is complete or handing off.
+- Put each tag on its own line with no extra characters on that line.
+- Emit each tag exactly once per TDD session.
+
 ## Prerequisites
 
 **Before starting TDD workflow:**

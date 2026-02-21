@@ -17,6 +17,19 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
 
+## Machine-Readable Session Tags
+
+For external tooling, writing-plans sessions MUST be explicitly delimited with these exact tags:
+
+- Start tag: `<WRITING_PLANS_START>`
+- End tag: `<WRITING_PLANS_END>`
+
+Rules:
+- Emit `<WRITING_PLANS_START>` in the first writing-plans response before plan drafting.
+- Emit `<WRITING_PLANS_END>` in the final writing-plans response after saving the plan and before transitioning to execution guidance.
+- Put each tag on its own line with no extra characters on that line.
+- Emit each tag exactly once per writing-plans session.
+
 ## Bite-Sized Task Granularity
 
 **Each step is one action (2-5 minutes):**
@@ -97,6 +110,8 @@ git commit -m "feat: add specific feature"
 ## Execution Handoff
 
 After saving the plan, inform the user:
+
+Emit `<WRITING_PLANS_END>` exactly as specified above, then inform the user:
 
 **"Plan complete and saved to `docs/plans/<filename>.md`.**
 
