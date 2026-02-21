@@ -16,9 +16,8 @@ Write the test first. Watch it fail. Write minimal code to pass.
 ## Prerequisites
 
 **Before starting TDD workflow:**
-1. Use the `using-git-worktrees` skill to create an isolated workspace
-2. Verify clean test baseline in the worktree
-3. Then proceed with TDD cycle
+1. Ensure you're working in a clean workspace with a verified test baseline
+2. Then proceed with TDD cycle
 
 ## When to Use
 
@@ -350,9 +349,8 @@ Can't check all boxes? You skipped TDD. Start over.
 
 **After completing TDD workflow:**
 1. Verify all tests pass
-2. Use the `requesting-code-review` skill to get feedback
-3. Address any issues found in review
-4. Then proceed with merge/PR workflow
+2. Commit your changes with clear commit messages
+3. Then proceed with merge/PR workflow
 
 ## When Stuck
 
@@ -382,12 +380,6 @@ When adding mocks or test utilities, read @testing-anti-patterns.md to avoid com
 - Any feature or bugfix implementation
 - Refactoring work
 - Behavior changes
-
-**Requires before starting:**
-- `using-git-worktrees` - Create isolated workspace
-
-**Requires after completing:**
-- `requesting-code-review` - Verify work meets requirements
 
 ## Final Rule
 
