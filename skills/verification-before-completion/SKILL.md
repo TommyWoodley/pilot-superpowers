@@ -150,3 +150,37 @@ From 24 failure memories:
 Run the command. Read the output. THEN claim the result.
 
 This is non-negotiable.
+
+## Announcing Completion
+
+After verification is complete and all evidence confirms success, you MUST explicitly declare completion of development work.
+
+**Completion Tag:** `<DEVELOPMENT_WORK_COMPLETE>`
+
+Rules:
+- Emit `<DEVELOPMENT_WORK_COMPLETE>` ONLY after:
+  - All verification commands have been run
+  - All evidence confirms success (tests pass, build succeeds, requirements met)
+  - The `<VERIFICATION_BEFORE_COMPLETION_END>` tag has been emitted
+  - You have fresh evidence that the work is actually complete
+- Put the tag on its own line with no extra characters
+- Emit this tag exactly once per development task
+- Do NOT emit this tag if:
+  - Verification revealed failures
+  - Work is incomplete
+  - You're delegating to another agent
+  - You're only announcing partial completion
+
+**Example flow:**
+```
+<VERIFICATION_BEFORE_COMPLETION_START>
+[Run verification commands]
+[Analyze evidence]
+[Report status with evidence]
+<VERIFICATION_BEFORE_COMPLETION_END>
+
+[If and only if all evidence confirms success:]
+<DEVELOPMENT_WORK_COMPLETE>
+```
+
+This tag signals to external tooling and human partners that development work has been completed and verified. It is a commitment backed by evidence, not a hope or assumption.
