@@ -360,10 +360,27 @@ Can't check all boxes? You skipped TDD. Start over.
 
 ## Completion
 
-**After completing TDD workflow:**
-1. Verify all tests pass
-2. Commit your changes with clear commit messages
-3. Then proceed with merge/PR workflow
+**After completing TDD workflow (no pending tests):**
+
+Once all TDD cycles are complete and there are NO pending tests remaining, you MUST invoke the verification-before-completion skill.
+
+**Mandatory sequence:**
+1. Confirm all TDD cycles complete (no pending tests in TODO)
+2. Emit `<TEST_DRIVEN_DEVELOPMENT_END>` tag
+3. **IMMEDIATELY invoke verification-before-completion skill**
+4. Follow verification-before-completion guidance to prove work is complete
+5. Only after verification evidence: proceed with commit/PR workflow
+
+**Why this matters:**
+- TDD proves individual behaviors work
+- Verification proves the system works as a whole
+- Both are required for honest completion claims
+
+**Do NOT:**
+- Claim completion without verification
+- Skip verification because "tests already pass"
+- Commit before running verification-before-completion
+- Emit `<TEST_DRIVEN_DEVELOPMENT_END>` without immediately calling verification skill
 
 ## When Stuck
 
