@@ -63,7 +63,7 @@ Write code before the test? Delete it. Start over.
 
 Implement fresh from tests. Period.
 
-## Red-Green-Refactor
+## Red-Green-Refactor-Commit
 
 ```dot
 digraph tdd_cycle {
@@ -73,6 +73,7 @@ digraph tdd_cycle {
     green [label="GREEN\nMinimal code", shape=box, style=filled, fillcolor="#ccffcc"];
     verify_green [label="Verify passes\nAll green", shape=diamond];
     refactor [label="REFACTOR\nClean up", shape=box, style=filled, fillcolor="#ccccff"];
+    commit [label="COMMIT\nSafe commit", shape=box, style=filled, fillcolor="#ffffcc"];
     next [label="Next", shape=ellipse];
 
     red -> verify_red;
@@ -82,10 +83,13 @@ digraph tdd_cycle {
     verify_green -> refactor [label="yes"];
     verify_green -> green [label="no"];
     refactor -> verify_green [label="stay\ngreen"];
-    verify_green -> next;
+    verify_green -> commit [label="green"];
+    commit -> next;
     next -> red;
 }
 ```
+
+**The complete TDD cycle is: RED → GREEN → REFACTOR → COMMIT**
 
 ### RED - Write Failing Test
 
@@ -210,6 +214,51 @@ After green only:
 
 Keep tests green. Don't add behavior.
 
+**After refactoring, verify tests still pass:**
+```bash
+npm test
+```
+
+### COMMIT - Checkpoint Progress
+
+**MANDATORY after each complete RED-GREEN-REFACTOR cycle.**
+
+Once tests are green and any refactoring is complete, you MUST commit the changes.
+
+**Steps:**
+1. Verify all tests still pass (just ran after refactor)
+2. **Invoke the safe-pilot-committing skill**
+3. Follow the structured commit recommendation
+4. Wait for user approval to execute git commands
+
+**Why commit after each cycle:**
+- Creates checkpoints for safe rollback
+- Documents progress in small, reviewable chunks
+- Prevents mixing multiple features/fixes
+- Makes git history clear and useful
+- Follows TDD best practice of frequent integration
+
+**Typical TDD commit pattern:**
+```
+feat(feature): add basic retry logic
+
+Implement retryOperation function with 3 attempts.
+Tests verify retry count and eventual success.
+```
+
+or if refactoring was significant:
+```
+refactor(feature): extract retry delay logic
+
+Move delay calculation into separate function.
+No behavior change, all tests still pass.
+```
+
+**Exception:**
+- Multiple related cycles might be grouped into one commit if they form a single logical unit
+- Ask your human partner if uncertain about commit boundaries
+- Default: commit after each cycle unless explicitly told otherwise
+
 ### Repeat
 
 Next failing test for next feature.
@@ -287,6 +336,9 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 | "TDD will slow me down" | TDD faster than debugging. Pragmatic = test-first. |
 | "Manual test faster" | Manual doesn't prove edge cases. You'll re-test every change. |
 | "Existing code has no tests" | You're improving it. Add tests for existing code. |
+| "I'll commit everything at the end" | Loses checkpoint history. Mixes unrelated changes. Commit each cycle. |
+| "Committing after each cycle is too many commits" | Small commits are good. Easy to review, revert, understand. |
+| "I'll wait to commit until feature is complete" | Feature incomplete = needs commits. Each cycle = progress worth saving. |
 
 ## Red Flags - STOP and Start Over
 
@@ -303,6 +355,9 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 - "Already spent X hours, deleting is wasteful"
 - "TDD is dogmatic, I'm being pragmatic"
 - "This is different because..."
+- **"I'll commit everything at the end"**
+- **Multiple completed cycles without commits**
+- **Skipping commit step "to save time"**
 
 **All of these mean: Delete code. Start over with TDD.**
 
@@ -343,6 +398,46 @@ PASS
 **REFACTOR**
 Extract validation for multiple fields if needed.
 
+**COMMIT**
+```bash
+# Invoke safe-pilot-committing skill
+# Produces recommendation:
+```
+
+```yaml
+<COMMIT_RECOMMENDATION>
+status: safe
+security_scan: pass
+issues_found: 0
+commits_proposed: 1
+
+commits:
+  - id: 1
+    type: fix
+    scope: forms
+    subject: reject empty email input
+    body: |
+      Add validation to reject empty or whitespace-only email.
+      Returns 'Email required' error message.
+    files:
+      - src/forms/submit.ts
+      - tests/forms/submit.test.ts
+    breaking: false
+    closes: "#789"
+</COMMIT_RECOMMENDATION>
+```
+
+**Execute (with user approval):**
+```bash
+$ git add src/forms/submit.ts tests/forms/submit.test.ts
+$ git commit -m "fix(forms): reject empty email input
+
+Add validation to reject empty or whitespace-only email.
+Returns 'Email required' error message.
+
+Fixes #789"
+```
+
 ## Verification Checklist
 
 Before marking work complete:
@@ -355,6 +450,7 @@ Before marking work complete:
 - [ ] Output pristine (no errors, warnings)
 - [ ] Tests use real code (mocks only if unavoidable)
 - [ ] Edge cases and errors covered
+- [ ] **Changes committed after each RED-GREEN-REFACTOR cycle**
 
 Can't check all boxes? You skipped TDD. Start over.
 
@@ -366,21 +462,42 @@ Once all TDD cycles are complete and there are NO pending tests remaining, you M
 
 **Mandatory sequence:**
 1. Confirm all TDD cycles complete (no pending tests in TODO)
-2. Emit `<TEST_DRIVEN_DEVELOPMENT_END>` tag
-3. **IMMEDIATELY invoke verification-before-completion skill**
-4. Follow verification-before-completion guidance to prove work is complete
-5. Only after verification evidence: proceed with commit/PR workflow
+2. **Verify all cycles were committed** (check git log if uncertain)
+3. Emit `<TEST_DRIVEN_DEVELOPMENT_END>` tag
+4. **IMMEDIATELY invoke verification-before-completion skill**
+5. Follow verification-before-completion guidance to prove work is complete
+6. If verification passes: verification-before-completion will trigger a final commit if needed
 
 **Why this matters:**
-- TDD proves individual behaviors work
+- TDD proves individual behaviors work (committed after each cycle)
 - Verification proves the system works as a whole
 - Both are required for honest completion claims
+- Commits during TDD create checkpoint history
+- Final verification ensures integration is correct
+
+**Expected commit pattern:**
+```
+git log --oneline -n 5
+abc123 test(feature): add error handling tests
+def456 feat(feature): implement error handling
+789ghi refactor(feature): extract validation
+012jkl test(feature): add validation tests
+345mno feat(feature): add basic validation
+```
+
+Each TDD cycle produces a commit. Your git history should show the TDD progression.
 
 **Do NOT:**
 - Claim completion without verification
 - Skip verification because "tests already pass"
-- Commit before running verification-before-completion
+- Skip committing during TDD cycles
+- Have uncommitted changes when invoking verification-before-completion
 - Emit `<TEST_DRIVEN_DEVELOPMENT_END>` without immediately calling verification skill
+
+**If you have uncommitted changes:**
+- You skipped the COMMIT step in TDD cycles
+- Commit them now using safe-pilot-committing
+- Then proceed with verification-before-completion
 
 ## When Stuck
 

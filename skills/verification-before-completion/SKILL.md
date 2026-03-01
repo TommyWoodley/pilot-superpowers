@@ -181,6 +181,40 @@ Rules:
 
 [If and only if all evidence confirms success:]
 <DEVELOPMENT_WORK_COMPLETE>
+
+[Then IMMEDIATELY proceed to commit workflow:]
+[Invoke safe-pilot-committing skill]
 ```
 
 This tag signals to external tooling and human partners that development work has been completed and verified. It is a commitment backed by evidence, not a hope or assumption.
+
+## Commit After Verification
+
+**MANDATORY: After successful verification, immediately commit the changes.**
+
+Once `<DEVELOPMENT_WORK_COMPLETE>` is emitted, you MUST:
+
+1. **Invoke the safe-pilot-committing skill**
+   - This skill will scan for security issues
+   - Produce structured commit recommendations
+   - Ensure commits are safe and properly formatted
+
+2. **Do NOT skip committing**
+   - Verified work that isn't committed can be lost
+   - Commits create checkpoints for safe progress
+   - Waiting to commit risks mixing unrelated changes
+
+3. **Workflow:**
+   ```
+   Verification passes → <DEVELOPMENT_WORK_COMPLETE> → safe-pilot-committing
+   ```
+
+**Why this matters:**
+- Verified work should be committed immediately while the context is fresh
+- Small, frequent commits are easier to review and revert if needed
+- Commits serve as save points during development
+- Delays between verification and commit risk contaminating the change set
+
+**Exception:**
+- If user explicitly says "don't commit yet" or "wait to commit"
+- Otherwise, committing after verification is MANDATORY
